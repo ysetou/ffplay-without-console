@@ -17,14 +17,14 @@ def run_ffplay(stream_url, window_title, width, height,x_pos, y_pos):
     # subprocessを使ってffplayを実行する
     ffplay_command = [
         "ffplay",
-        "-fflags", "nobuffer+fastseek+flush_packets",
-	"-flags", "low_delay",
-        "-probesize", "32",
-	"-analyzeduration", "0",
-	"-max_delay", "0",
-	"-max_probe_packets", "1",
-	"-framedrop",
-        "-sync", "ext",
+        #"-fflags", "nobuffer+fastseek+flush_packets",
+	#"-flags", "low_delay",
+        #"-probesize", "32",
+	#"-analyzeduration", "0",
+	"-max_delay", "0",		# これだけで遅延は生じないかも・・・
+	#"-max_probe_packets", "1",
+	#"-framedrop",
+        #"-sync", "ext",
         "-loglevel", "quiet",           # ログを表示しないオプション
         "-window_title", window_title,  # ウィンドウタイトルを指定
         "-x", str(width),               # ウィンドウの幅を設定
