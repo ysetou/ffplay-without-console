@@ -3,6 +3,7 @@ import argparse
 import sys
 from urllib.parse import urlparse
 
+# 使用しているffplayはd:\ffmpeg01で、環境変数の設定でどれを使うか決定できる
 # python ffplay.py [strem_url]
 
 # ウィンドウ位置のメモ
@@ -13,25 +14,23 @@ from urllib.parse import urlparse
 # rtsp://atomcam2-04.local:8554/video0_unicast --width 1520 --height 860 --x_pos -1920 --y_pos 30
 
 def run_ffplay(stream_url, window_title, width, height,x_pos, y_pos):
-
     # subprocessを使ってffplayを実行する
     ffplay_command = [
         "ffplay",
-        #"-fflags", "nobuffer+fastseek+flush_packets",
-	#"-flags", "low_delay",
-        #"-probesize", "32",
-	#"-analyzeduration", "0",
-	"-max_delay", "0",		# これだけで遅延は生じないかも・・・
-	#"-max_probe_packets", "1",
-	#"-framedrop",
-        #"-sync", "ext",
-        "-loglevel", "quiet",           # ログを表示しないオプション
-        "-window_title", window_title,  # ウィンドウタイトルを指定
-        "-x", str(width),               # ウィンドウの幅を設定
-        "-y", str(height),              # ウィンドウの高さを設定
+	"-rtsp_transport", "tcp",
+    	"-flags", "low_delay",
+	"-probesize", "32",
+    	"-analyzeduration", "0",
+    	"-max_delay", "100000",
+    	"-framedrop",
+    	"-loglevel", "quiet",
+    	"-window_title", window_title,
+    	"-x", str(width),
+    	"-y", str(height),
         "-left", str(x_pos),            # ウィンドウの左端の位置を設定
         "-top", str(y_pos),             # ウィンドウの上端の位置を設定
-        stream_url                      # ストリームのURL
+	"-volume", "0",		        # ← 音量（例：30%）
+	stream_url                      # ストリームのURL
     ]
 
     # コンソールウィンドウを表示しないようにsubprocessを設定
@@ -62,7 +61,7 @@ def main():
         window_title = window_title.replace(".local", "")
 
     # ffplayを実行
-    run_ffplay(args.stream_url,window_title,args.width, args.height, args.x_pos, args.y_pos)
+    run_ffplay(args.stream_url,window_title,args.width, args.height, args.x_pos, args.y_pos )
 
 if __name__ == '__main__':
     main()
